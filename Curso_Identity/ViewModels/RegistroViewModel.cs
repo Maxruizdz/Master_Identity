@@ -31,6 +31,7 @@ namespace Curso_Identity.ViewModels
         public string Ciudad { get; set; }
         public string Direccion { get; set; }
         [Required(ErrorMessage = "La fecha de nacimiento es obligatoria")]
+        [Display(Name ="Fecha de Nacimiento")]
         public DateTime FechaNacimiento { get; set; }
         [Required(ErrorMessage ="El estado es obligatorio")]
         public bool Estado { get; set; }

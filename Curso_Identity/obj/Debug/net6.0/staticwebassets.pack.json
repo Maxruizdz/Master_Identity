@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\usuario\\Desktop\\Proyecto_Identity\\Curso_Identity\\wwwroot\\imagenes\\calendario.png",
+      "PackagePath": "staticwebassets\\imagenes\\calendario.png"
+    },
+    {
       "Id": "C:\\Users\\usuario\\Desktop\\Proyecto_Identity\\Curso_Identity\\wwwroot\\js\\site.js",
       "PackagePath": "staticwebassets\\js\\site.js"
     },
