@@ -1,8 +1,19 @@
+using Curso_Identity.Datos;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+
+builder.Services.AddDbContext<ApplicationDbContext>(options => {
+    var cadena_conexion = builder.Configuration.GetConnectionString("ConexionSql");
+    options.UseSqlServer(cadena_conexion);
+
+
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
