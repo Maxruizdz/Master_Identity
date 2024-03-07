@@ -60,5 +60,10 @@ namespace Curso_Identity.Controllers
             
             }
         }
+        [HttpGet]
+        public IActionResult Acceso() { 
+        AccesoViewModel accesoViewModel= new AccesoViewModel();
+        return View(accesoViewModel);
+        }
     }
 }
