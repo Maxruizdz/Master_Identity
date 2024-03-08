@@ -82,22 +82,30 @@ namespace Curso_Identity.Controllers
         {
 
             ViewData["ReturnUrl"]= returnurl;
-
+            returnurl = returnurl ?? Url.Content("~/");
 
             if (ModelState.IsValid)
             {
-                var usuario = await _signInManager.PasswordSignInAsync(vmAcceso.Email, vmAcceso.Password, vmAcceso.RememberMe, lockoutOnFailure:false);
-            
-                 if (usuario.Succeeded)
-                    {
+                var usuario = await _signInManager.PasswordSignInAsync(vmAcceso.Email, vmAcceso.Password, vmAcceso.RememberMe, lockoutOnFailure: true);
+
+                if (usuario.Succeeded)
+                {
 
                     return LocalRedirect(returnurl);
-                    }
-                  else {ModelState.AddModelError(string.Empty, "Acceso Invalido");
+                }
+                else if (usuario.IsLockedOut is true)
+                {
+
+                    return View("Bloqueado");
+
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Acceso Invalido");
 
                     return View(vmAcceso);
                 }
-                
+
             }
 
 
