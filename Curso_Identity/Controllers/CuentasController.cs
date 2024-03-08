@@ -65,5 +65,31 @@ namespace Curso_Identity.Controllers
         AccesoViewModel accesoViewModel= new AccesoViewModel();
         return View(accesoViewModel);
         }
+
+
+        [HttpPost]
+
+        public async Task<IActionResult> Acceso(AccesoViewModel vmAcceso)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var usuario = await _signInManager.PasswordSignInAsync(vmAcceso.Email, vmAcceso.Password, vmAcceso.RememberMe, lockoutOnFailure:false);
+            
+                 if (usuario.Succeeded)
+                    { 
+
+                        return RedirectToAction("Index", "Home");
+                    }
+                  else {ModelState.AddModelError(string.Empty, "Acceso Invalido");
+
+                    return View(vmAcceso);
+                }
+                
+            }
+
+
+            return View(vmAcceso);
+        }
     }
 }
