@@ -22,16 +22,18 @@ namespace Curso_Identity.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Registro() { 
-        RegistroViewModel registroVM= new RegistroViewModel();
+        public async Task<IActionResult> Registro(string returnurl=null) {
+            ViewData["ReturnUrl"] = returnurl;
+            RegistroViewModel registroVM= new RegistroViewModel();
         return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
 
 
-        public async Task<IActionResult> Registro(RegistroViewModel vmRegistro) {
-
+        public async Task<IActionResult> Registro(RegistroViewModel vmRegistro, string returnurl = null) {
+            ViewData["ReturnUrl"] = returnurl;
+            returnurl = returnurl ?? Url.Content("~/");
             if (ModelState.IsValid) { 
             
              var
@@ -43,7 +45,7 @@ namespace Curso_Identity.Controllers
 
                     await _signInManager.SignInAsync(app_new_Usuari, isPersistent: false);
 
-                    return RedirectToAction("Index", "Home");
+                    return LocalRedirect(returnurl);
                 }
                 else { ValidarErrores(resultado); }
             }
@@ -66,6 +68,7 @@ namespace Curso_Identity.Controllers
      
         public IActionResult Acceso(string returnurl = null) {
             ViewData["ReturnUrl"]= returnurl;
+            returnurl = returnurl ?? Url.Content("~/");
         AccesoViewModel accesoViewModel= new AccesoViewModel();
 
         return View();
@@ -88,7 +91,7 @@ namespace Curso_Identity.Controllers
                  if (usuario.Succeeded)
                     {
 
-                    return Redirect(returnurl);
+                    return LocalRedirect(returnurl);
                     }
                   else {ModelState.AddModelError(string.Empty, "Acceso Invalido");
 
