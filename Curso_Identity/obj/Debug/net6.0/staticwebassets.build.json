@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "mNaSgqZgSoxcQj3+91Wnfvt0ivpycBS3tIBmAncC3kw=",
+  "Hash": "Cp/UORUXEHIfxZR61VmXtQ5dfE/VINdlRAb5O6/GUaU=",
   "Source": "Curso_Identity",
   "BasePath": "_content/Curso_Identity",
   "Mode": "Default",
@@ -83,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "C:\\Users\\usuario\\Desktop\\Proyecto_Identity\\Curso_Identity\\wwwroot\\imagenes\\calendario.png",
+      "SourceId": "Curso_Identity",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\usuario\\Desktop\\Proyecto_Identity\\Curso_Identity\\wwwroot\\",
+      "BasePath": "_content/Curso_Identity",
+      "RelativePath": "imagenes/calendario.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\imagenes\\calendario.png"
     },
     {
       "Identity": "C:\\Users\\usuario\\Desktop\\Proyecto_Identity\\Curso_Identity\\wwwroot\\js\\site.js",
