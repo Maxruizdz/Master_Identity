@@ -1,4 +1,5 @@
 using Curso_Identity.Datos;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +15,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => {
 
 
 });
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+
+builder.Services.ConfigureApplicationCookie(options => {
+
+
+    options.LoginPath = new PathString("/Cuentas/Acceso");
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,7 +40,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

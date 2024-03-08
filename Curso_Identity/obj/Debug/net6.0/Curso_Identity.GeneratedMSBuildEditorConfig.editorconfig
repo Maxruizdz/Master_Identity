@@ -16,6 +16,14 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/usuario/Desktop/Proyecto_Identity/Curso_Identity/Views/Cuentas/Acceso.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VlbnRhc1xBY2Nlc28uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/usuario/Desktop/Proyecto_Identity/Curso_Identity/Views/Cuentas/Registro.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ3VlbnRhc1xSZWdpc3Ryby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/usuario/Desktop/Proyecto_Identity/Curso_Identity/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -26,6 +34,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/usuario/Desktop/Proyecto_Identity/Curso_Identity/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/usuario/Desktop/Proyecto_Identity/Curso_Identity/Views/Shared/_LoginRegistroVistaParcial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblJlZ2lzdHJvVmlzdGFQYXJjaWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/usuario/Desktop/Proyecto_Identity/Curso_Identity/Views/Shared/_ValidationScriptsPartial.cshtml]
