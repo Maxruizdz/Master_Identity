@@ -29,6 +29,7 @@ namespace Curso_Identity.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
+
         public async Task<IActionResult> Registro(RegistroViewModel vmRegistro) {
 
             if (ModelState.IsValid) { 
@@ -63,8 +64,8 @@ namespace Curso_Identity.Controllers
         }
         [HttpGet]
      
-        public IActionResult Acceso() { 
-        
+        public IActionResult Acceso(string returnurl = null) {
+            ViewData["ReturnUrl"]= returnurl;
         AccesoViewModel accesoViewModel= new AccesoViewModel();
 
         return View();
@@ -74,17 +75,20 @@ namespace Curso_Identity.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Acceso(AccesoViewModel vmAcceso)
+        public async Task<IActionResult> Acceso(AccesoViewModel vmAcceso, string returnurl=null)
         {
+
+            ViewData["ReturnUrl"]= returnurl;
+
 
             if (ModelState.IsValid)
             {
                 var usuario = await _signInManager.PasswordSignInAsync(vmAcceso.Email, vmAcceso.Password, vmAcceso.RememberMe, lockoutOnFailure:false);
             
                  if (usuario.Succeeded)
-                    { 
+                    {
 
-                        return RedirectToAction("Index", "Home");
+                    return Redirect(returnurl);
                     }
                   else {ModelState.AddModelError(string.Empty, "Acceso Invalido");
 
@@ -100,7 +104,7 @@ namespace Curso_Identity.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
+        
         public async Task<IActionResult> SalirAplicacion() {
 
             await _signInManager.SignOutAsync();
