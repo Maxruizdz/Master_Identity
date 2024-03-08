@@ -24,9 +24,10 @@ namespace Curso_Identity.Controllers
         [HttpGet]
         public async Task<IActionResult> Registro() { 
         RegistroViewModel registroVM= new RegistroViewModel();
-        return View(registroVM);
+        return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
 
         public async Task<IActionResult> Registro(RegistroViewModel vmRegistro) {
 
@@ -61,15 +62,17 @@ namespace Curso_Identity.Controllers
             }
         }
         [HttpGet]
+     
         public IActionResult Acceso() { 
         
         AccesoViewModel accesoViewModel= new AccesoViewModel();
 
-        return View(accesoViewModel);
+        return View();
         }
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
 
         public async Task<IActionResult> Acceso(AccesoViewModel vmAcceso)
         {
@@ -93,5 +96,19 @@ namespace Curso_Identity.Controllers
 
             return View(vmAcceso);
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> SalirAplicacion() {
+
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        
+        
+        
+        }
+
     }
 }
