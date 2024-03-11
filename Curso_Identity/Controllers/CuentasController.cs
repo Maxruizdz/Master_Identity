@@ -125,5 +125,14 @@ namespace Curso_Identity.Controllers
         
         }
 
+        [HttpGet]
+        public IActionResult OlvidoPassword() {
+        
+        
+        
+        
+        return View();
+        }
+
     }
 }
