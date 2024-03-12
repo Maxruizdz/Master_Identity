@@ -187,12 +187,52 @@ namespace Curso_Identity.Controllers
 
 
         [HttpGet]
+        
         public IActionResult ResetPassword(string code = null)
         {
 
 
             return code == null ? View("Error") : View();
 
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task< IActionResult> ResetPassword(RecuperaPasswordViewModel rpViewModel) {
+
+            if (ModelState.IsValid) { 
+            
+            var usuario= await _userManager.FindByEmailAsync(rpViewModel.Email);
+                if (usuario is null) {
+
+                    return RedirectToAction("ConfirmacionRecuperaPassword");
+                
+                }
+
+                var resultado = await _userManager.ResetPasswordAsync(usuario, rpViewModel.Code, rpViewModel.Password);
+
+                if (resultado.Succeeded)
+                {
+                    return RedirectToAction("ConfirmacionRecuperaPassword");
+                }
+
+                ValidarErrores(resultado);
+      
+            
+            }
+
+            return View(rpViewModel);
+        
+        
+        
+        
+        }
+
+        [HttpGet]
+        public IActionResult ConfirmacionRecuperaPassword() {
+
+
+            return View();
+        
         }
 
 
