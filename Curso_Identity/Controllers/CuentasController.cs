@@ -1,6 +1,9 @@
 ﻿using Curso_Identity.Models;
+using Curso_Identity.Services;
 using Curso_Identity.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
@@ -11,10 +14,12 @@ namespace Curso_Identity.Controllers
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        public CuentasController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        private readonly IEmailSender _EmailSender;
+        public CuentasController(UserManager<IdentityUser> userManager,IEmailSender mailJetEmailSender,  SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _EmailSender = mailJetEmailSender;
         }
         public IActionResult Index()
         {
@@ -68,7 +73,6 @@ namespace Curso_Identity.Controllers
      
         public IActionResult Acceso(string returnurl = null) {
             ViewData["ReturnUrl"]= returnurl;
-            returnurl = returnurl ?? Url.Content("~/");
         AccesoViewModel accesoViewModel= new AccesoViewModel();
 
         return View();
@@ -133,6 +137,42 @@ namespace Curso_Identity.Controllers
         
         return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OlvidoPassword(OlvidoPasswordViewModel olvidoPasswordViewModel) {
+
+            if (ModelState.IsValid) {
+
+                var usuario = await _userManager.FindByEmailAsync(olvidoPasswordViewModel.Email);
+
+                if (usuario == null)
+                {
+                    return RedirectToAction("ConfirmacionOlvidoPassword");
+                    
+                }
+
+                var codigo = await _userManager.GeneratePasswordResetTokenAsync(usuario);
+                var urlRetorno = Url.Action("ResetPassword", "Cuentas", new { UserId = usuario.Id, code = codigo }, protocol: HttpContext.Request.Scheme);
+
+                await _EmailSender.SendEmailAsync(olvidoPasswordViewModel.Email, "Recuperar contraseña-Proyecto Identity",
+                     "Por favor recupere su contraseña dando click aqui <a href=\"" + urlRetorno + "\">enlace</a>");
+         
+
+}
+
+
+            return RedirectToAction("ConfirmacionOlvidoPassword");
+        
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ConfirmacionOlvidoPassword() { 
+        
+        
+        
+        return View(); }
 
     }
 }
