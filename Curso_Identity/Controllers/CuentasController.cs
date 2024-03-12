@@ -15,7 +15,7 @@ namespace Curso_Identity.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IEmailSender _EmailSender;
-        public CuentasController(UserManager<IdentityUser> userManager,IEmailSender mailJetEmailSender,  SignInManager<IdentityUser> signInManager)
+        public CuentasController(UserManager<IdentityUser> userManager, IEmailSender mailJetEmailSender, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -27,23 +27,26 @@ namespace Curso_Identity.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Registro(string returnurl=null) {
+        public async Task<IActionResult> Registro(string returnurl = null)
+        {
             ViewData["ReturnUrl"] = returnurl;
-            RegistroViewModel registroVM= new RegistroViewModel();
-        return View();
+            RegistroViewModel registroVM = new RegistroViewModel();
+            return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
 
 
-        public async Task<IActionResult> Registro(RegistroViewModel vmRegistro, string returnurl = null) {
+        public async Task<IActionResult> Registro(RegistroViewModel vmRegistro, string returnurl = null)
+        {
             ViewData["ReturnUrl"] = returnurl;
             returnurl = returnurl ?? Url.Content("~/");
-            if (ModelState.IsValid) { 
-            
-             var
-                app_new_Usuari = new AppUsuario() {UserName= vmRegistro.Email,Nombre= vmRegistro.Nombre, Email= vmRegistro.Email, Ciudad= vmRegistro.Ciudad, CodigoPais=vmRegistro.CodigoPais, Pais= vmRegistro.Pais,Url= vmRegistro.Url , Direccion=vmRegistro.Direccion, FechaNacimiento= vmRegistro.FechaNacimiento, Estado= vmRegistro.Estado };
-             var resultado=await _userManager.CreateAsync(app_new_Usuari, vmRegistro.Password);
+            if (ModelState.IsValid)
+            {
+
+                var
+                   app_new_Usuari = new AppUsuario() { UserName = vmRegistro.Email, Nombre = vmRegistro.Nombre, Email = vmRegistro.Email, Ciudad = vmRegistro.Ciudad, CodigoPais = vmRegistro.CodigoPais, Pais = vmRegistro.Pais, Url = vmRegistro.Url, Direccion = vmRegistro.Direccion, FechaNacimiento = vmRegistro.FechaNacimiento, Estado = vmRegistro.Estado };
+                var resultado = await _userManager.CreateAsync(app_new_Usuari, vmRegistro.Password);
 
                 if (resultado.Succeeded)
                 {
@@ -62,30 +65,32 @@ namespace Curso_Identity.Controllers
         private void ValidarErrores(IdentityResult resultado)
         {
 
-            foreach (var error in resultado.Errors) {
+            foreach (var error in resultado.Errors)
+            {
 
                 ModelState.AddModelError(string.Empty, error.Description);
-            
-            
+
+
             }
         }
         [HttpGet]
-     
-        public IActionResult Acceso(string returnurl = null) {
-            ViewData["ReturnUrl"]= returnurl;
-        AccesoViewModel accesoViewModel= new AccesoViewModel();
 
-        return View();
+        public IActionResult Acceso(string returnurl = null)
+        {
+            ViewData["ReturnUrl"] = returnurl;
+            AccesoViewModel accesoViewModel = new AccesoViewModel();
+
+            return View();
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public async Task<IActionResult> Acceso(AccesoViewModel vmAcceso, string returnurl=null)
+        public async Task<IActionResult> Acceso(AccesoViewModel vmAcceso, string returnurl = null)
         {
 
-            ViewData["ReturnUrl"]= returnurl;
+            ViewData["ReturnUrl"] = returnurl;
             returnurl = returnurl ?? Url.Content("~/");
 
             if (ModelState.IsValid)
@@ -119,37 +124,41 @@ namespace Curso_Identity.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        
-        public async Task<IActionResult> SalirAplicacion() {
+
+        public async Task<IActionResult> SalirAplicacion()
+        {
 
             await _signInManager.SignOutAsync();
             return RedirectToAction(nameof(HomeController.Index), "Home");
-        
-        
-        
+
+
+
         }
 
         [HttpGet]
-        public IActionResult OlvidoPassword() {
-        
-        
-        
-        
-        return View();
+        public IActionResult OlvidoPassword()
+        {
+
+
+
+
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> OlvidoPassword(OlvidoPasswordViewModel olvidoPasswordViewModel) {
+        public async Task<IActionResult> OlvidoPassword(OlvidoPasswordViewModel olvidoPasswordViewModel)
+        {
 
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
 
                 var usuario = await _userManager.FindByEmailAsync(olvidoPasswordViewModel.Email);
 
                 if (usuario == null)
                 {
                     return RedirectToAction("ConfirmacionOlvidoPassword");
-                    
+
                 }
 
                 var codigo = await _userManager.GeneratePasswordResetTokenAsync(usuario);
@@ -157,22 +166,36 @@ namespace Curso_Identity.Controllers
 
                 await _EmailSender.SendEmailAsync(olvidoPasswordViewModel.Email, "Recuperar contraseña-Proyecto Identity",
                      "Por favor recupere su contraseña dando click aqui <a href=\"" + urlRetorno + "\">enlace</a>");
-         
 
-}
+
+            }
 
 
             return RedirectToAction("ConfirmacionOlvidoPassword");
-        
+
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult ConfirmacionOlvidoPassword() { 
-        
-        
-        
-        return View(); }
+        public IActionResult ConfirmacionOlvidoPassword()
+        {
+
+
+
+            return View();
+        }
+
+
+        [HttpGet]
+        public IActionResult ResetPassword(string code = null)
+        {
+
+
+            return code == null ? View("Error") : View();
+
+        }
+
+
 
     }
 }
