@@ -71,3 +71,11 @@ C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\obj\Debug\net6.0\refin
 C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\obj\Debug\net6.0\Curso_Identity.pdb
 C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\obj\Debug\net6.0\Curso_Identity.genruntimeconfig.cache
 C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\obj\Debug\net6.0\ref\Curso_Identity.dll
+C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\obj\Debug\net6.0\Curso_Identity.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\Mailjet.Client.dll
+C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.UI.dll
+C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Embedded.dll
+C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\Newtonsoft.Json.dll
+C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\MailKit.dll
+C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\MimeKit.dll
+C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\BouncyCastle.Crypto.dll

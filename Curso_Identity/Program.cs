@@ -1,5 +1,7 @@
 using Curso_Identity.Datos;
+using Curso_Identity.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,7 +17,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => {
 
 
 });
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
 
 
 
@@ -23,9 +25,22 @@ builder.Services.ConfigureApplicationCookie(options => {
 
 
     options.LoginPath = new PathString("/Cuentas/Acceso");
+    options.AccessDeniedPath = new PathString("/Cuentas/Bloqueado");
 });
 
+//Configurando Identity
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequiredLength = 5;
+    options.Password.RequireLowercase = true;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1);
+    options.Lockout.MaxFailedAccessAttempts = 3;
 
+
+
+
+});
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
