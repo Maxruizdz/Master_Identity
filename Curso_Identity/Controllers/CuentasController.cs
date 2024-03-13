@@ -239,7 +239,7 @@ namespace Curso_Identity.Controllers
         }
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> ConfirmacionEmail(string UserId, string code) {
+        public async Task<IActionResult> ConfirmarEmail(string UserId, string code) {
 
             if (UserId is null || code is null) { 
             
@@ -255,7 +255,7 @@ namespace Curso_Identity.Controllers
              var resultado = await _userManager.ConfirmEmailAsync(usuario, code); 
             
 
-            return View(resultado.Succeeded ? "ConfirmarEmail": 
+            return View(resultado.Succeeded ? "ConfirmarEmail" : 
                 "Error");
         
         }
