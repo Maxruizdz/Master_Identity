@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "mzzT80Itt8YlFuOYZk1+QOFFBht4hctOCYL/dqwSCPgQGONAGmiVOXEtLbMSnn3nOAD7+trYN5oY0MHk7fShqQ==",
+  "dgSpecHash": "xir3hYyD3SNzb+KXpLRqPlekTilfgMiCVXcD+UUlEsPDlFxbCtEVhulL/gHaLPK9jG/UlXp7FQBXX78NX12Eog==",
   "success": true,
   "projectFilePath": "C:\\Users\\usuario\\Desktop\\Proyecto_Identity\\Curso_Identity\\Curso_Identity.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\usuario\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\usuario\\.nuget\\packages\\mailjet.api\\1.2.3\\mailjet.api.1.2.3.nupkg.sha512",
     "C:\\Users\\usuario\\.nuget\\packages\\mailkit\\3.2.0\\mailkit.3.2.0.nupkg.sha512",
+    "C:\\Users\\usuario\\.nuget\\packages\\microsoft.aspnetcore.authentication.facebook\\6.0.28\\microsoft.aspnetcore.authentication.facebook.6.0.28.nupkg.sha512",
     "C:\\Users\\usuario\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\6.0.27\\microsoft.aspnetcore.cryptography.internal.6.0.27.nupkg.sha512",
     "C:\\Users\\usuario\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\6.0.27\\microsoft.aspnetcore.cryptography.keyderivation.6.0.27.nupkg.sha512",
     "C:\\Users\\usuario\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.27\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.27.nupkg.sha512",

@@ -79,3 +79,4 @@ C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\MailK
 C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\MimeKit.dll
 C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\BouncyCastle.Crypto.dll
 C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\appsettings.json
+C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Facebook.dll

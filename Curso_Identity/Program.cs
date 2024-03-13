@@ -40,6 +40,16 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 
 });
+
+builder.Services.AddAuthentication().AddFacebook(options => {
+
+
+    options.AppId = builder.Configuration.GetSection("Facebook:IdApp").Value;
+    options.AppSecret= builder.Configuration.GetSection("Facebook:SecretApp").Value;
+
+    
+});
+
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 var app = builder.Build();
 
