@@ -44,15 +44,18 @@ namespace Curso_Identity.Controllers
             if (ModelState.IsValid)
             {
 
-                var
-                   app_new_Usuari = new AppUsuario() { UserName = vmRegistro.Email, Nombre = vmRegistro.Nombre, Email = vmRegistro.Email, Ciudad = vmRegistro.Ciudad, CodigoPais = vmRegistro.CodigoPais, Pais = vmRegistro.Pais, Url = vmRegistro.Url, Direccion = vmRegistro.Direccion, FechaNacimiento = vmRegistro.FechaNacimiento, Estado = vmRegistro.Estado };
+                var app_new_Usuari = new AppUsuario() { UserName = vmRegistro.Email, Nombre = vmRegistro.Nombre, Email = vmRegistro.Email, Ciudad = vmRegistro.Ciudad, CodigoPais = vmRegistro.CodigoPais, Pais = vmRegistro.Pais, Url = vmRegistro.Url, Direccion = vmRegistro.Direccion, FechaNacimiento = vmRegistro.FechaNacimiento, Estado = vmRegistro.Estado };
                 var resultado = await _userManager.CreateAsync(app_new_Usuari, vmRegistro.Password);
 
                 if (resultado.Succeeded)
                 {
+                    
+                  var code = await _userManager.GenerateEmailConfirmationTokenAsync(app_new_Usuari);
+                    var urlRetorno = Url.Action("ConfirmarEmail", "Cuentas", new { UserId = app_new_Usuari.Id, code = code }, protocol: HttpContext.Request.Scheme);
 
                     await _signInManager.SignInAsync(app_new_Usuari, isPersistent: false);
 
+                    await _EmailSender.SendEmailAsync(vmRegistro.Email, "Confirmar su cuenta - Proyecto Identity", "Por favor confirme su contraseña dando click aqui <a href=\"" + urlRetorno + "\">enlace</a>");
                     return LocalRedirect(returnurl);
                 }
                 else { ValidarErrores(resultado); }
@@ -234,7 +237,28 @@ namespace Curso_Identity.Controllers
             return View();
         
         }
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmacionEmail(string UserId, string code) {
 
+            if (UserId is null || code is null) { 
+            
+            
+            return View("Error"); 
+            }
+            var usuario= await _userManager.FindByIdAsync(UserId);
+            if (usuario is null)
+            {
+
+                return View("Error");
+            }
+             var resultado = await _userManager.ConfirmEmailAsync(usuario, code); 
+            
+
+            return View(resultado.Succeeded ? "ConfirmarEmail": 
+                "Error");
+        
+        }
 
 
     }
