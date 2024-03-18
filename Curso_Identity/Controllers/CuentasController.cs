@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Org.BouncyCastle.Crypto.Operators;
 using System.Security.Claims;
 
 namespace Curso_Identity.Controllers
@@ -402,6 +403,23 @@ namespace Curso_Identity.Controllers
         {
             ViewData["ReturnUrl"] = returnurl;
             return View();
+        }
+
+        [HttpGet] 
+        public async Task<IActionResult> ActivarAutenticador() 
+        { 
+        var usuario= await _userManager.GetUserAsync(User);
+            
+            await _userManager.ResetAuthenticatorKeyAsync(usuario);
+
+            var token = await _userManager.GetAuthenticatorKeyAsync(usuario);
+
+
+            var adModel = new AutenticacionDosFactoresViewModel() { Token = token };
+
+            return View(adModel); 
+        
+        
         }
 
 
