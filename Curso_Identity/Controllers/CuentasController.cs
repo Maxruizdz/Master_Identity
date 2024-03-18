@@ -4,8 +4,10 @@ using Curso_Identity.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Security.Claims;
 
 namespace Curso_Identity.Controllers
 {
@@ -78,52 +80,52 @@ namespace Curso_Identity.Controllers
         }
         [HttpGet]
 
-        public IActionResult Acceso(string returnurl = null)
-        {
-            ViewData["ReturnUrl"] = returnurl;
-            AccesoViewModel accesoViewModel = new AccesoViewModel();
+        //public IActionResult Acceso(string returnurl = null)
+        //{
+        //    ViewData["ReturnUrl"] = returnurl;
+        //    AccesoViewModel accesoViewModel = new AccesoViewModel();
 
-            return View();
-        }
+        //    return View();
+        //}
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+//        [ValidateAntiForgeryToken]
+///*
+//        public async Task<IActionResult> Acceso(AccesoViewModel vmAcceso, string returnurl = null)
+//        {
 
-        public async Task<IActionResult> Acceso(AccesoViewModel vmAcceso, string returnurl = null)
-        {
+//            ViewData["ReturnUrl"] = returnurl;
+//            returnurl = returnurl ?? Url.Content("~/");
 
-            ViewData["ReturnUrl"] = returnurl;
-            returnurl = returnurl ?? Url.Content("~/");
+//            if (ModelState.IsValid)
+//            {
+//                var usuario = await _signInManager.PasswordSignInAsync(vmAcceso.Email, vmAcceso.Password, vmAcceso.RememberMe, lockoutOnFailure: true);
 
-            if (ModelState.IsValid)
-            {
-                var usuario = await _signInManager.PasswordSignInAsync(vmAcceso.Email, vmAcceso.Password, vmAcceso.RememberMe, lockoutOnFailure: true);
+//                if (usuario.Succeeded)
+//                {
 
-                if (usuario.Succeeded)
-                {
+//                    return LocalRedirect(returnurl);
+//                }
+//                else if (usuario.IsLockedOut is true)
+//                {
 
-                    return LocalRedirect(returnurl);
-                }
-                else if (usuario.IsLockedOut is true)
-                {
+//                    return View("Bloqueado");
 
-                    return View("Bloqueado");
+//                }
+//                else
+//                {
+//                    ModelState.AddModelError(string.Empty, "Acceso Invalido");
 
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Acceso Invalido");
+//                    return View(vmAcceso);
+//                }
 
-                    return View(vmAcceso);
-                }
-
-            }
+//            }
 
 
-            return View(vmAcceso);
-        }
-
+//            return View(vmAcceso);
+//        }
+//*/
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -258,6 +260,148 @@ namespace Curso_Identity.Controllers
             return View(resultado.Succeeded ? "ConfirmarEmail" : 
                 "Error");
         
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+
+        public IActionResult AccesoExterno(string proveedor, string returnurl = null)
+        {
+            
+            var urlRetorno = Url.Action("AccesoExternoCallback", "Cuentas", new { ReturnUrl = returnurl });
+            var propiedades = _signInManager.ConfigureExternalAuthenticationProperties(proveedor, urlRetorno);
+
+            return Challenge(propiedades, proveedor);
+
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> AccesoExternoCallback(string returnurl = null, string error = null)
+        {
+            returnurl = returnurl ?? Url.Content("~/");
+            ViewData["ReturnUrl"] = returnurl;
+            if (error != null)
+            {
+
+                ModelState.AddModelError(string.Empty, $"Error en el acceso externo {error}");
+                return View(nameof(Acceso));
+            }
+
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+
+            if (info is null)
+            {
+
+                return RedirectToAction(nameof(Acceso));
+
+            }
+            var resultado = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
+            if (resultado.Succeeded)
+            {
+
+                await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+
+                return LocalRedirect(returnurl);
+
+            }
+            else
+            {
+
+                ViewData["ReturnUrl"] = returnurl;
+                ViewData["NombreAMostrarProveedor"] = info.ProviderDisplayName;
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                var name = info.Principal.FindFirstValue(ClaimTypes.Name);
+
+                return View("ConfirmacionAccesoExterno", new ConfirmacionAccesoExterno { Email = email, Name = name });
+
+
+
+            }
+        }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> ConfirmacionAccesoExterno(ConfirmacionAccesoExterno acceViewModel, string returnurl = null)
+        {
+
+
+            returnurl = returnurl ?? Url.Content("~/");
+            if (ModelState.IsValid)
+            {
+
+                var info = await _signInManager.GetExternalLoginInfoAsync();
+                if (info == null)
+                {
+
+                    return View("Error");
+
+                }
+                var usuario = new AppUsuario { UserName = acceViewModel.Email, Email = acceViewModel.Email, Nombre = acceViewModel.Name };
+                var resultado = await _userManager.CreateAsync(usuario);
+                if (resultado.Succeeded)
+                {
+
+                    resultado = await _userManager.AddLoginAsync(usuario, info);
+                    if (resultado.Succeeded)
+                    {
+
+                        await _signInManager.SignInAsync(usuario, isPersistent: false);
+
+                        await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+
+                        return LocalRedirect(returnurl);
+
+                    }
+
+
+                }
+                ValidarErrores(resultado);
+
+            }
+            ViewData["ReturnUrl"] = returnurl;
+
+            return View(acceViewModel);
+
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Acceso(AccesoViewModel accViewModel, string returnurl = null)
+        {
+            ViewData["ReturnUrl"] = returnurl;
+            returnurl = returnurl ?? Url.Content("~/");
+            if (ModelState.IsValid)
+            {
+                var resultado = await _signInManager.PasswordSignInAsync(accViewModel.Email, accViewModel.Password, accViewModel.RememberMe, lockoutOnFailure: true);
+
+                if (resultado.Succeeded)
+                {
+                    //return RedirectToAction("Index", "Home");
+                    return LocalRedirect(returnurl);
+                }
+                if (resultado.IsLockedOut)
+                {
+                    return View("Bloqueado");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Acceso inválido");
+                    return View(accViewModel);
+                }
+            }
+
+            return View(accViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Acceso(string returnurl = null)
+        {
+            ViewData["ReturnUrl"] = returnurl;
+            return View();
         }
 
 

@@ -1,5 +1,6 @@
 using Curso_Identity.Datos;
 using Curso_Identity.Services;
+using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -41,14 +42,13 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 });
 
-builder.Services.AddAuthentication().AddFacebook(options => {
-
-
-    options.AppId = builder.Configuration.GetSection("Facebook:IdApp").Value;
-    options.AppSecret= builder.Configuration.GetSection("Facebook:SecretApp").Value;
-
-    
+builder.Services.AddAuthentication().AddFacebook(options =>
+{
+    options.AppId =builder.Configuration.GetSection( "Facebook:IdApp").Value;
+    options.AppSecret = builder.Configuration.GetSection("Facebook:SecretApp").Value;
+  
 });
+
 
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 var app = builder.Build();
