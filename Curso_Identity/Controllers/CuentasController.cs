@@ -307,6 +307,12 @@ namespace Curso_Identity.Controllers
                 return LocalRedirect(returnurl);
 
             }
+            if (resultado.RequiresTwoFactor) {
+
+
+
+                return RedirectToAction(nameof(VerificarCodigoAutenticacion), new { returnurl = returnurl });
+            }
             else
             {
 
@@ -388,6 +394,11 @@ namespace Curso_Identity.Controllers
                 {
                     return View("Bloqueado");
                 }
+                if (resultado.RequiresTwoFactor) {
+
+                    return RedirectToAction(nameof(VerificarCodigoAutenticacion), new { returnurl, accViewModel.RememberMe });
+                
+                }
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Acceso inválido");
@@ -459,6 +470,27 @@ namespace Curso_Identity.Controllers
         
         }
 
+        [HttpGet]
+        public IActionResult VerificarCodigoAutenticacion() {
+
+            return View();
+        
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> VerificarCodigoAutenticacion( bool recordarDatos, string returnl= null)
+        {
+            var usuarios = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            if (usuarios is null) {
+
+                return View("Error");
+            
+            }
+            ViewData["ReturnUrl"] = returnl;
+            return View(new VerificarAutenticadorViewModel {ReturnUrl= returnl, Recordar= recordarDatos });
+
+        }
 
 
     }
