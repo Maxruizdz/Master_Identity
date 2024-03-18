@@ -422,6 +422,44 @@ namespace Curso_Identity.Controllers
         
         }
 
+        [HttpPost]
+        public async Task<IActionResult> ActivarAutenticacion(AutenticacionDosFactoresViewModel autenDosfacvm) {
+
+            if (ModelState.IsValid) {
+
+                var usuario = await _userManager.GetUserAsync(User);
+                var suceeded = await _userManager.VerifyTwoFactorTokenAsync(usuario, _userManager.Options.Tokens.AuthenticatorTokenProvider, autenDosfacvm.Code);
+                if (suceeded)
+                {
+
+                    await _userManager.SetTwoFactorEnabledAsync(usuario, true);
+
+                }
+                else {
+
+                    ModelState.AddModelError("Verificar", "Su autenticacion de dos factores no ha sido validada");
+                
+                }
+
+            
+            
+            
+            }
+
+            return RedirectToAction(nameof(ConfirmacionAutenticador));
+        
+        }
+        [HttpGet]
+
+        public IActionResult ConfirmacionAutenticador() {
+
+
+            return View();
+        
+        
+        }
+
+
 
     }
 }
