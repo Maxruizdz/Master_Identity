@@ -12,7 +12,7 @@ namespace Curso_Identity.ViewModels
         public string Token { get; set; }
 
 
-        public string UrlCodigoQr { get; set; }
+        public string UrlCodigoQr { get;set; }
 
 
     }

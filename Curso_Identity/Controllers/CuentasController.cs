@@ -387,11 +387,26 @@ namespace Curso_Identity.Controllers
             var adModel = new AutenticacionDosFactoresViewModel()
             {
                 Token = token,
-                UrlCodigoQr = urlAutenticador // Corregir asignación de la URL del código QR 
+                UrlCodigoQr = urlAutenticador 
             };
 
             return View(adModel);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> EliminarAutenticador() 
+        { 
+        
+        var usuario= await _userManager.GetUserAsync(User);
+            await _userManager.ResetAuthenticatorKeyAsync(usuario);
+            await _userManager.SetTwoFactorEnabledAsync(usuario, false);
+
+            return RedirectToAction(nameof(Index), "Home");
+        
+        
+        
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> ActivarAutenticador(AutenticacionDosFactoresViewModel autenDosfacvm) {
