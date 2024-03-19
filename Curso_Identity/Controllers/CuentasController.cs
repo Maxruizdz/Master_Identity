@@ -492,6 +492,45 @@ namespace Curso_Identity.Controllers
 
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [AllowAnonymous]
+
+
+        public async Task<IActionResult> VerificarCodigoAutenticacion(VerificarAutenticadorViewModel vaViewModel) 
+        {
+
+            vaViewModel.ReturnUrl = vaViewModel.ReturnUrl ?? Url.Content("~/");
+
+            if (!ModelState.IsValid) {
+
+
+
+                return View();
+            
+            }
+
+
+            var resultado = await _signInManager.TwoFactorAuthenticatorSignInAsync(vaViewModel.Code, vaViewModel.Recordar, rememberClient: false);
+            if (resultado.Succeeded) {
+
+                return LocalRedirect(vaViewModel.ReturnUrl);
+            
+            }
+            if (resultado.IsLockedOut)
+            {
+                return View("Bloqueado");
+            }
+            else {
+
+                ModelState.AddModelError(String.Empty, "Codigo Invalido");
+                
+                return View(vaViewModel);
+            
+            }
+        
+        }
+
 
     }
 }
