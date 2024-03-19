@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Org.BouncyCastle.Crypto.Operators;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 
 namespace Curso_Identity.Controllers
 {
@@ -18,11 +19,13 @@ namespace Curso_Identity.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IEmailSender _EmailSender;
-        public CuentasController(UserManager<IdentityUser> userManager, IEmailSender mailJetEmailSender, SignInManager<IdentityUser> signInManager)
+        public readonly UrlEncoder _urlencoder;
+        public CuentasController(UserManager<IdentityUser> userManager, IEmailSender mailJetEmailSender, SignInManager<IdentityUser> signInManager, UrlEncoder urlEncoder)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _EmailSender = mailJetEmailSender;
+            _urlencoder = urlEncoder;
         }
         public IActionResult Index()
         {
@@ -79,55 +82,7 @@ namespace Curso_Identity.Controllers
 
             }
         }
-        [HttpGet]
-
-        //public IActionResult Acceso(string returnurl = null)
-        //{
-        //    ViewData["ReturnUrl"] = returnurl;
-        //    AccesoViewModel accesoViewModel = new AccesoViewModel();
-
-        //    return View();
-        //}
-
-
-        [HttpPost]
-//        [ValidateAntiForgeryToken]
-///*
-//        public async Task<IActionResult> Acceso(AccesoViewModel vmAcceso, string returnurl = null)
-//        {
-
-//            ViewData["ReturnUrl"] = returnurl;
-//            returnurl = returnurl ?? Url.Content("~/");
-
-//            if (ModelState.IsValid)
-//            {
-//                var usuario = await _signInManager.PasswordSignInAsync(vmAcceso.Email, vmAcceso.Password, vmAcceso.RememberMe, lockoutOnFailure: true);
-
-//                if (usuario.Succeeded)
-//                {
-
-//                    return LocalRedirect(returnurl);
-//                }
-//                else if (usuario.IsLockedOut is true)
-//                {
-
-//                    return View("Bloqueado");
-
-//                }
-//                else
-//                {
-//                    ModelState.AddModelError(string.Empty, "Acceso Invalido");
-
-//                    return View(vmAcceso);
-//                }
-
-//            }
-
-
-//            return View(vmAcceso);
-//        }
-//*/
-
+     
         [HttpPost]
         [ValidateAntiForgeryToken]
 
@@ -415,26 +370,31 @@ namespace Curso_Identity.Controllers
             ViewData["ReturnUrl"] = returnurl;
             return View();
         }
+        [HttpGet]
+        public async Task<IActionResult> ActivarAutenticador()
+        {
+            string formatoUrlAutenticador = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
-        [HttpGet] 
-        public async Task<IActionResult> ActivarAutenticador() 
-        { 
-        var usuario= await _userManager.GetUserAsync(User);
-            
+            var usuario = await _userManager.GetUserAsync(User);
+
             await _userManager.ResetAuthenticatorKeyAsync(usuario);
 
             var token = await _userManager.GetAuthenticatorKeyAsync(usuario);
 
+            // Habilitar código QR
+            string urlAutenticador = string.Format(formatoUrlAutenticador, _urlencoder.Encode("Curso_Identity"), _urlencoder.Encode(usuario.Email), token);
 
-            var adModel = new AutenticacionDosFactoresViewModel() { Token = token };
+            var adModel = new AutenticacionDosFactoresViewModel()
+            {
+                Token = token,
+                UrlCodigoQr = urlAutenticador // Corregir asignación de la URL del código QR 
+            };
 
-            return View(adModel); 
-        
-        
+            return View(adModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ActivarAutenticacion(AutenticacionDosFactoresViewModel autenDosfacvm) {
+        public async Task<IActionResult> ActivarAutenticador(AutenticacionDosFactoresViewModel autenDosfacvm) {
 
             if (ModelState.IsValid) {
 
@@ -449,6 +409,7 @@ namespace Curso_Identity.Controllers
                 else {
 
                     ModelState.AddModelError("Verificar", "Su autenticacion de dos factores no ha sido validada");
+                    return View(autenDosfacvm);
                 
                 }
 

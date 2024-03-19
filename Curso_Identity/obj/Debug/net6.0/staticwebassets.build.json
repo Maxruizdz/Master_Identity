@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "w5PkK5vjpx5r8xm5ISRdnYuwNfMLApTdMxBoGXy0ZHs=",
+  "Hash": "2eXJJ2+yEdMeZU4dN7f+zYrMeXvmlYOroHvL+vgbbD4=",
   "Source": "Curso_Identity",
   "BasePath": "_content/Curso_Identity",
   "Mode": "Default",
@@ -1120,6 +1120,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\imagenes\\calendario.png"
+    },
+    {
+      "Identity": "C:\\Users\\usuario\\Desktop\\Proyecto_Identity\\Curso_Identity\\wwwroot\\js\\qrcode.js",
+      "SourceId": "Curso_Identity",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\usuario\\Desktop\\Proyecto_Identity\\Curso_Identity\\wwwroot\\",
+      "BasePath": "_content/Curso_Identity",
+      "RelativePath": "js/qrcode.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\qrcode.js"
     },
     {
       "Identity": "C:\\Users\\usuario\\Desktop\\Proyecto_Identity\\Curso_Identity\\wwwroot\\js\\site.js",

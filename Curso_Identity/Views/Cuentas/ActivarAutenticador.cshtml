@@ -2,13 +2,11 @@
 @model AutenticacionDosFactoresViewModel
 
 
-<p>Por favor ingrese el codigo de abajo en su APP Autenticador</p>
-<p>
-    @Model.Token
+<p><strong>Por favor ingrese el codigo de abajo en su APP Autenticador </strong></p>@Model.Token
+<p>O tambien puedes escanear el siguiente codigo QR</p>
+<div id="codigoQR"></div>
 
-</p>
-
-<form method="post  ">
+<form method="post">
 
     <input type="hidden" asp-for="Token" />
 
@@ -21,7 +19,7 @@
 
             <label asp-for="Code"></label>
             <input type="text" asp-for="Code" class="form-control" placeholder="Escribe el codigo de tu autenticador" />
-            <span asp-validation-for="Code" class="text-danger"
+            <span asp-validation-for="Code" class="text-danger"></span>
         </div>
         </div>
         <div class="col-sm-5">
@@ -52,4 +50,11 @@
     @{
             await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script src="~/js/qrcode.js"></script>
+    <script type="text/javascript">
+    
+        var urlCodigoQr = "@Html.Raw(Model.UrlCodigoQr)";
+        new QRCode(document.getElementById("codigoQR"), urlCodigoQr);
+    </script>
+
 }
