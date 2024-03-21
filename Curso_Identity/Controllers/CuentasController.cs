@@ -13,6 +13,7 @@ using System.Text.Encodings.Web;
 
 namespace Curso_Identity.Controllers
 {
+    [Authorize]
     public class CuentasController : Controller
     {
 
@@ -27,12 +28,14 @@ namespace Curso_Identity.Controllers
             _EmailSender = mailJetEmailSender;
             _urlencoder = urlEncoder;
         }
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Registro(string returnurl = null)
         {
             ViewData["ReturnUrl"] = returnurl;
@@ -41,7 +44,7 @@ namespace Curso_Identity.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-
+        [AllowAnonymous]
 
         public async Task<IActionResult> Registro(RegistroViewModel vmRegistro, string returnurl = null)
         {
@@ -85,7 +88,7 @@ namespace Curso_Identity.Controllers
      
         [HttpPost]
         [ValidateAntiForgeryToken]
-
+       
         public async Task<IActionResult> SalirAplicacion()
         {
 
@@ -97,6 +100,7 @@ namespace Curso_Identity.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult OlvidoPassword()
         {
 
@@ -148,7 +152,7 @@ namespace Curso_Identity.Controllers
 
 
         [HttpGet]
-        
+        [AllowAnonymous]
         public IActionResult ResetPassword(string code = null)
         {
 
@@ -158,6 +162,7 @@ namespace Curso_Identity.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task< IActionResult> ResetPassword(RecuperaPasswordViewModel rpViewModel) {
 
             if (ModelState.IsValid) { 
@@ -189,6 +194,7 @@ namespace Curso_Identity.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult ConfirmacionRecuperaPassword() {
 
 
@@ -371,6 +377,7 @@ namespace Curso_Identity.Controllers
             return View();
         }
         [HttpGet]
+        
         public async Task<IActionResult> ActivarAutenticador()
         {
             string formatoUrlAutenticador = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
@@ -394,6 +401,7 @@ namespace Curso_Identity.Controllers
         }
 
         [HttpGet]
+
         public async Task<IActionResult> EliminarAutenticador() 
         { 
         

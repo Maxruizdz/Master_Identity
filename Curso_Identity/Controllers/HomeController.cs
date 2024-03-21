@@ -16,7 +16,7 @@ namespace Curso_Identity.Controllers
             _userManager= userManager;
         }
 
-        public async IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var usuario = await _userManager.GetUserAsync(User);
 
