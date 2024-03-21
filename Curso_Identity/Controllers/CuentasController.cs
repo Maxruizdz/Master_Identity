@@ -19,14 +19,16 @@ namespace Curso_Identity.Controllers
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IEmailSender _EmailSender;
         public readonly UrlEncoder _urlencoder;
-        public CuentasController(UserManager<IdentityUser> userManager, IEmailSender mailJetEmailSender, SignInManager<IdentityUser> signInManager, UrlEncoder urlEncoder)
+        public CuentasController(UserManager<IdentityUser> userManager, IEmailSender mailJetEmailSender, SignInManager<IdentityUser> signInManager, UrlEncoder urlEncoder, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _EmailSender = mailJetEmailSender;
             _urlencoder = urlEncoder;
+            _roleManager = roleManager;
         }
         [AllowAnonymous]
         public IActionResult Index()
@@ -48,6 +50,29 @@ namespace Curso_Identity.Controllers
 
         public async Task<IActionResult> Registro(RegistroViewModel vmRegistro, string returnurl = null)
         {
+            if (!await _roleManager.RoleExistsAsync("Administrador") ) 
+            {
+
+                await _roleManager.CreateAsync(new IdentityRole("Administrador"));
+
+           }
+            if (!await _roleManager.RoleExistsAsync("Registrado"))
+            {
+
+                await _roleManager.CreateAsync(new IdentityRole("Registrado"));
+
+            }
+
+
+
+
+
+
+
+
+
+
+
             ViewData["ReturnUrl"] = returnurl;
             returnurl = returnurl ?? Url.Content("~/");
             if (ModelState.IsValid)
