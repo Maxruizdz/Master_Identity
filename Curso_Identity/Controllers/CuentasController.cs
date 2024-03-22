@@ -40,8 +40,21 @@ namespace Curso_Identity.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Registro(string returnurl = null)
         {
+            if (!await _roleManager.RoleExistsAsync("Administrador"))
+            {
+
+                await _roleManager.CreateAsync(new IdentityRole("Administrador"));
+
+            }
+            if (!await _roleManager.RoleExistsAsync("Registrado"))
+            {
+
+                await _roleManager.CreateAsync(new IdentityRole("Registrado"));
+
+            }
+
             ViewData["ReturnUrl"] = returnurl;
-            RegistroViewModel registroVM = new RegistroViewModel();
+           
             return View();
         }
         [HttpPost]
@@ -50,10 +63,7 @@ namespace Curso_Identity.Controllers
 
         public async Task<IActionResult> Registro(RegistroViewModel vmRegistro, string returnurl = null)
         {
-
-
-
-            CreandoRoles();
+            
 
 
 
@@ -102,9 +112,10 @@ namespace Curso_Identity.Controllers
 
             }
         }
-
-        public async void CreandoRoles() {
-
+        [HttpGet]
+      
+        public async Task<IActionResult> RegistroAdministrador(string returnurl = null)
+        {
             if (!await _roleManager.RoleExistsAsync("Administrador"))
             {
 
@@ -117,8 +128,53 @@ namespace Curso_Identity.Controllers
                 await _roleManager.CreateAsync(new IdentityRole("Registrado"));
 
             }
+            ViewData["ReturnUrl"] = returnurl;
+            
+            return View();
         }
 
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> RegistroAdministrador( RegistroViewModel
+            vmRegistro, string returnurl = null)
+        {
+
+        ViewData["ReturnUrl"] = returnurl;
+            returnurl = returnurl ?? Url.Content("~/");
+            if (ModelState.IsValid)
+            {
+
+                var app_new_Usuari = new AppUsuario() { UserName = vmRegistro.Email, Nombre = vmRegistro.Nombre, Email = vmRegistro.Email, Ciudad = vmRegistro.Ciudad, CodigoPais = vmRegistro.CodigoPais, Pais = vmRegistro.Pais, Url = vmRegistro.Url, Direccion = vmRegistro.Direccion, FechaNacimiento = vmRegistro.FechaNacimiento, Estado = vmRegistro.Estado };
+                var resultado = await _userManager.CreateAsync(app_new_Usuari, vmRegistro.Password);
+
+                if (resultado.Succeeded)
+
+                {
+
+                    await _userManager.AddToRoleAsync(app_new_Usuari, "Administrador");
+
+
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(app_new_Usuari);
+                    var urlRetorno = Url.Action("ConfirmarEmail", "Cuentas", new { UserId = app_new_Usuari.Id, code = code }, protocol: HttpContext.Request.Scheme);
+
+                    await _signInManager.SignInAsync(app_new_Usuari, isPersistent: false);
+
+
+                    await _EmailSender.SendEmailAsync(vmRegistro.Email, "Confirmar su cuenta - Proyecto Identity", "Por favor confirme su contraseña dando click aqui <a href=\"" + urlRetorno + "\">enlace</a>");
+                    return LocalRedirect(returnurl);
+                }
+                else { ValidarErrores(resultado); }
+            }
+
+
+            return View(vmRegistro);
+        }
+
+
+      
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -372,6 +428,7 @@ namespace Curso_Identity.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Acceso(AccesoViewModel accViewModel, string returnurl = null)
         {
             ViewData["ReturnUrl"] = returnurl;
@@ -405,6 +462,7 @@ namespace Curso_Identity.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Acceso(string returnurl = null)
         {
             ViewData["ReturnUrl"] = returnurl;
