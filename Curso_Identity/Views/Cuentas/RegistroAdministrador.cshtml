@@ -86,15 +86,26 @@
                     </div>
                     <div class="mb-3">
 
-                        <label asp-for="Password" class="col-md-2"></label>
+                        <label asp-for="Password" class="col-md-4"></label>
                         <input asp-for="Password" class="form-control" placeholder="ingrese su contraseña" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
 
-                        <label asp-for="ConfirmPassword" class="col-md-2"></label>
+                        <label asp-for="ConfirmPassword" class="col-md-4"></label>
                         <input asp-for="ConfirmPassword" class="form-control" placeholder="ingrese la confirmacion de su contraseña />
                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+
+                        <label asp-for="RolSeleccionado" class="col-md-4"></label>
+                        <select asp-for="RolSeleccionado" asp-items="@Model.ListRoles" class="form-control">
+
+                            <option disabled selected>
+                                ---Seleccionar rol---
+                            </option>
+
+                        </select>
                     </div>
                 </div>
             </div>

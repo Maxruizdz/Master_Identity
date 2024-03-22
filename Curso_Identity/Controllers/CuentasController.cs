@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Manage.Internal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Org.BouncyCastle.Crypto.Operators;
 using System.Security.Claims;
@@ -128,6 +129,25 @@ namespace Curso_Identity.Controllers
                 await _roleManager.CreateAsync(new IdentityRole("Registrado"));
 
             }
+            List<SelectListItem> listaRoles = new List<SelectListItem>();
+            listaRoles.Add(new SelectListItem
+            {
+                Value = "Registrado",
+                Text = "Registrado"
+            });
+            listaRoles.Add(new SelectListItem
+            {
+                Value = "Administrador",
+                Text = "Administrador"
+            });
+
+
+            RegistroViewModel registroVm = new RegistroViewModel()
+            {
+
+                ListRoles = listaRoles
+
+            };
             ViewData["ReturnUrl"] = returnurl;
             
             return View();
@@ -150,10 +170,25 @@ namespace Curso_Identity.Controllers
                 var resultado = await _userManager.CreateAsync(app_new_Usuari, vmRegistro.Password);
 
                 if (resultado.Succeeded)
-
                 {
 
-                    await _userManager.AddToRoleAsync(app_new_Usuari, "Administrador");
+
+                    if (vmRegistro.RolSeleccionado != null && vmRegistro.RolSeleccionado.Length > 0 && vmRegistro.RolSeleccionado == "Administrador")
+                    {
+
+                        await _userManager.AddToRoleAsync(app_new_Usuari, "Administrador");
+
+                    }
+                    else {
+
+                        await _userManager.AddToRoleAsync(app_new_Usuari, "Registrado");
+                    
+                    }
+
+
+
+
+                   
 
 
 
@@ -169,7 +204,19 @@ namespace Curso_Identity.Controllers
                 else { ValidarErrores(resultado); }
             }
 
+            List<SelectListItem> listaRoles = new List<SelectListItem>();
+            listaRoles.Add(new SelectListItem
+            {
+                Value = "Registrado",
+                Text = "Registrado"
+            });
+            listaRoles.Add(new SelectListItem
+            {
+                Value = "Administrador",
+                Text = "Administrador"
+            });
 
+            vmRegistro.ListRoles = listaRoles;
             return View(vmRegistro);
         }
 

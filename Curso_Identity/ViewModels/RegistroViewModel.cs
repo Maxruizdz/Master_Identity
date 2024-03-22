@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System.ComponentModel.DataAnnotations;
 
 namespace Curso_Identity.ViewModels
 {
@@ -35,6 +37,15 @@ namespace Curso_Identity.ViewModels
         public DateTime FechaNacimiento { get; set; }
         [Required(ErrorMessage ="El estado es obligatorio")]
         public bool Estado { get; set; }
+
+        [Display (Name ="Seleccionar Rol")]
+
+        public IEnumerable<SelectListItem>ListRoles { get; set; }
+        [Display(Name ="Rol Seleccionado")]
+        public string RolSeleccionado { get; set; }
+
+
+
     }
 
     }
