@@ -13,7 +13,7 @@ namespace Curso_Identity.Controllers
         public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
-            _userManager= userManager;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> Index()
@@ -38,7 +38,7 @@ namespace Curso_Identity.Controllers
 
             return View();
         }
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Privacy()
         {
             return View();

@@ -330,6 +330,7 @@ namespace Curso_Identity.Controllers
         
         }
 
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult ConfirmacionRecuperaPassword() {
@@ -651,6 +652,13 @@ namespace Curso_Identity.Controllers
                 return View(vaViewModel);
             
             }
+        
+        }
+        [HttpGet]
+        public IActionResult Denegado(string returnurl= null) {
+            ViewData["ReturnUrl"] = returnurl;
+            returnurl= returnurl ?? Url.Content("~/");
+            return View();
         
         }
 
