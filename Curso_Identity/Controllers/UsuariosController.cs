@@ -82,9 +82,15 @@ namespace Curso_Identity.Controllers
 
             return View(appusuario);
         }
+
+        [HttpGet]
+        public IActionResult CambiarPassword() {
+
+            return View();
         
-        
-        
+        }
+
+
         }
     }
 
