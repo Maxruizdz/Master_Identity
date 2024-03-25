@@ -23,6 +23,56 @@
             
         <p>Tu rol es Registrado</p> 
         }
+
+
+        <li class="nav-item dropdown">
+
+            <a class="nav-item dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Mi Perfil
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+
+                <li class="nav-item">
+
+                    <a class="nav-link text-dark" href=""> Hola, @UserManager.GetUserName(User) </a>
+
+                </li>
+
+
+                <li class="nav-item">
+
+                    <a class="nav-link  text-dark" asp-area="" asp-controller="Usuarios" asp-action="EditarPerfil" asp-route-id="@UserManager.GetUserId(User)">Editar Perfil</a>
+
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li class="nav-item">
+
+                    <a class="nav-link  text-dark" asp-area="" asp-controller="Usuarios" asp-action="CambiarPassword">Cambiar Contraseña </a>
+
+                </li>
+
+
+          </ul>
+
+ </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <li>
             <a class="nav-link text-white" href="">Hola, @UserManager.GetUserName(User)</a>
         </li>

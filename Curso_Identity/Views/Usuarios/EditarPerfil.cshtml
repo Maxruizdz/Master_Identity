@@ -1,4 +1,4 @@
-﻿@model AppUsuario;
+﻿@model Curso_Identity.Models.AppUsuario;
 
 @{
     ViewData["Title"] = "Registro de usuario";
@@ -84,7 +84,7 @@
                     <div class="mb-3">
 
                         <label asp-for="FechaNacimiento" class="col-md-2"></label>
-                        <input type="text" name="FechaNacimiento" class="form-control" id="datepicker" placeholder="Ejemplo: 1990-10-05" />
+                        <input type="text" asp-for="FechaNacimiento" class="form-control" id="datepicker" placeholder="Ejemplo: 1990-10-05" />
                         <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
                     </div>
                 </div>
@@ -118,3 +118,8 @@
 
     </div>
 </div>
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

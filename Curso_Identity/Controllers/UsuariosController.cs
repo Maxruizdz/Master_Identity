@@ -9,21 +9,33 @@ namespace Curso_Identity.Controllers
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _context;
+
+
+        public UsuariosController(UserManager<IdentityUser> userManager, ApplicationDbContext application) 
+        { 
+        
+        _context = application;
+            _userManager = userManager;
+        
+        
+        }
         public IActionResult Index()
         {
             return View();
         }
 
+  
         [HttpGet]
-        public IActionResult EditarPerfil(string id) 
+        public IActionResult EditarPerfil(string id)
         {
 
-            if (id is null) {
+            if (id is null)
+            {
 
                 return NotFound();
             }
 
-            var user = _context.Users.Find(id);
+            var user = _context.AppUsuario.Find(id);
             if (user == null)
             {
 
@@ -33,7 +45,7 @@ namespace Curso_Identity.Controllers
 
 
             return View(user);
-        
+
         }
     }
 }
