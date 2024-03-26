@@ -28,5 +28,11 @@ namespace Curso_Identity.Controllers
             var roles = _context.Roles.ToList();
             return View(roles);
         }
+        [HttpGet]
+        public IActionResult Crear()
+        {
+            
+            return View();
+        }
     }
 }
