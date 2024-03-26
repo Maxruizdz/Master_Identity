@@ -51,5 +51,56 @@ namespace Curso_Identity.Controllers
 
 
         }
+        [HttpGet]
+        public IActionResult Editar(string id)
+        {
+
+
+            if (string.IsNullOrEmpty(id))
+            {
+
+                return View();
+            }
+            else {
+
+             var rol=   _context.Roles.FirstOrDefault(rol=>rol.Id ==id);
+              return View(rol);
+            
+            }
+
+            return View();
+
+        }
+        [HttpPost]
+        public async Task<IActionResult> Editar(IdentityRole rol_modificado)
+        {
+
+            if (await _roleManager.RoleExistsAsync(rol_modificado.Name))
+            {
+
+                return RedirectToAction(nameof(Index));
+            }
+            var rol = _context.Roles.FirstOrDefault(rol => rol.Id == rol_modificado.Id);
+            if (rol is null) 
+            {
+
+
+                return RedirectToAction(nameof(Index));
+
+            }
+            
+            rol.Name = rol_modificado.Name;
+            rol.NormalizedName =rol_modificado.Name.ToUpper();
+            await _roleManager.UpdateAsync(rol);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+            
+
+        }
+
+
+
+
     }
 }
