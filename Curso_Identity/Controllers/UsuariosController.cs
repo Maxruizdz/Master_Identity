@@ -1,6 +1,7 @@
 ﻿using Curso_Identity.Datos;
 using Curso_Identity.Models;
 using Curso_Identity.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -8,6 +9,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace Curso_Identity.Controllers
 {
+    [Authorize]
     public class UsuariosController : Controller
     {
 
