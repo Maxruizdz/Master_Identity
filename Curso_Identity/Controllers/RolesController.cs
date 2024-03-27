@@ -72,6 +72,7 @@ namespace Curso_Identity.Controllers
 
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(IdentityRole rol_modificado)
         {
 
@@ -96,6 +97,36 @@ namespace Curso_Identity.Controllers
             return RedirectToAction(nameof(Index));
 
             
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Borrar(string id ) 
+        { 
+        var rol= _context.Roles.FirstOrDefault(r=>r.Id == id);
+        if (rol is null)
+            {
+
+                return RedirectToAction(nameof(Index));
+
+            }
+
+            var usuario_conRol = _context.UserRoles.Where(rol => rol.RoleId == id).Count();
+            if (usuario_conRol>0) 
+            {
+
+
+                return RedirectToAction(nameof(Index));
+
+
+            }
+
+
+            await _roleManager.DeleteAsync(rol);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
 
         }
 
