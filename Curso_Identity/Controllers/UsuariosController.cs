@@ -68,7 +68,6 @@ namespace Curso_Identity.Controllers
             if (usuario == null)
             {
 
-                TempData["Error"] = "El usuario no existe";
                 return RedirectToAction(nameof(Index));
 
 
@@ -156,13 +155,14 @@ namespace Curso_Identity.Controllers
 
 
                 usuarioDB.LockoutEnd = DateTime.Now;
-
+                TempData["Correcto"] = "El usuario ha sido Desbloqueado";
             }
             else
             {
 
                 usuarioDB.LockoutEnd = DateTime.Now.AddHours(10);
-            
+                TempData["Error"] = "El usuario ha sido bloqueado";
+
             }
 
 
