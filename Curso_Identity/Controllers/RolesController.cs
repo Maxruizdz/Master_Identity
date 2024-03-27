@@ -39,13 +39,13 @@ namespace Curso_Identity.Controllers
         public async Task<IActionResult> Crear(IdentityRole nuevo_rol) 
         {
             if (await _roleManager.RoleExistsAsync(nuevo_rol.Name)) 
-            { 
-            
-             return RedirectToAction(nameof(Index));
+            {
+                TempData["Error"] = "El rol ya existe";
+                return RedirectToAction(nameof(Index));
             }
 
             await _roleManager.CreateAsync(nuevo_rol);
-
+            TempData["Correcto"] = "Rol creado correctamente";
             return RedirectToAction(nameof(Index));
 
 
@@ -78,7 +78,7 @@ namespace Curso_Identity.Controllers
 
             if (await _roleManager.RoleExistsAsync(rol_modificado.Name))
             {
-
+                TempData["Error"] = "El rol ya existe";
                 return RedirectToAction(nameof(Index));
             }
             var rol = _context.Roles.FirstOrDefault(rol => rol.Id == rol_modificado.Id);
@@ -89,11 +89,13 @@ namespace Curso_Identity.Controllers
                 return RedirectToAction(nameof(Index));
 
             }
+
             
             rol.Name = rol_modificado.Name;
             rol.NormalizedName =rol_modificado.Name.ToUpper();
             await _roleManager.UpdateAsync(rol);
             await _context.SaveChangesAsync();
+            TempData["Correcto"] = "Rol editado correctamente";
             return RedirectToAction(nameof(Index));
 
             
@@ -108,6 +110,7 @@ namespace Curso_Identity.Controllers
         if (rol is null)
             {
 
+                TempData["Error"] = "No existe el rol";
                 return RedirectToAction(nameof(Index));
 
             }
@@ -116,7 +119,7 @@ namespace Curso_Identity.Controllers
             if (usuario_conRol>0) 
             {
 
-
+                TempData["Error"] = "El rol tiene usuarios, no se puede borrar";
                 return RedirectToAction(nameof(Index));
 
 
@@ -125,6 +128,8 @@ namespace Curso_Identity.Controllers
 
             await _roleManager.DeleteAsync(rol);
             await _context.SaveChangesAsync();
+
+            TempData["Correcto"] = "El rol ha sido eliminado exitosamente";
 
             return RedirectToAction(nameof(Index));
 
