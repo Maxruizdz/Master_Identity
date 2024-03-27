@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using AppIdentityRazor.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AppIdentityRazor.Data
@@ -9,5 +10,9 @@ namespace AppIdentityRazor.Data
             : base(options)
         {
         }
+
+
+
+        public DbSet<AppUsuario> AppUsuario { get; set; }
     }
 }
