@@ -58,6 +58,39 @@ namespace Curso_Identity.Controllers
             return View(usuarios);
         }
 
+
+        [HttpGet]
+        public IActionResult Editar(string id)
+        {
+          var usuario = _context.AppUsuario.Find(id);
+          
+            if (usuario == null)
+            {
+
+                TempData["Error"] = "El usuario no existe";
+                return RedirectToAction(nameof(Index));
+
+
+            }
+
+            var rolUsuario = _context.UserRoles.ToList();
+            var roles = _context.Roles.ToList();
+            var rol = rolUsuario.FirstOrDefault(u => u.UserId == usuario.Id);
+            if (rol != null) {
+
+
+                usuario.IdRol = roles.FirstOrDefault(role => role.Id == rol.RoleId).Id;
+            
+            }
+            usuario.ListaRoles = _context.Roles.Select(u=>new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem 
+            { 
+            Text= u.Name, 
+             Value=u.Id
+            
+            });
+            return View(usuario);
+        }
+
   
         [HttpGet]
         public IActionResult EditarPerfil(string id)
