@@ -4,6 +4,7 @@ using Curso_Identity.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
@@ -90,7 +91,54 @@ namespace Curso_Identity.Controllers
             });
             return View(usuario);
         }
+        [HttpPost]
 
+        public async Task<IActionResult> Editar(AppUsuario usuario) {
+
+            if (ModelState.IsValid) 
+            {
+
+                var usuario_bd = _context.Users.Find(usuario.Id);
+                if (usuario_bd == null) 
+                {
+
+                    return NotFound();
+                
+                }
+
+                var rolUsuario = _context.UserRoles.FirstOrDefault(prop => prop.UserId == usuario_bd.Id);
+
+                if (rolUsuario != null) {
+
+
+                    var rol_actual = _context.Roles.Where(p => p.Id == rolUsuario.RoleId).Select(prp => prp.Name).FirstOrDefault();
+
+
+                    await _userManager.RemoveFromRoleAsync(usuario_bd, rol_actual);
+                
+                
+                }
+
+
+
+
+                await _userManager.AddToRoleAsync(usuario_bd, _context.Roles.FirstOrDefault(prop=>prop.Id == usuario.IdRol).Name);
+
+                await _context.SaveChangesAsync();
+                TempData["Correcto"] = "Se ha modificado el rol del Usuario exitosamente";
+
+                return RedirectToAction(nameof(Index));
+            
+            
+            
+            
+            
+            
+            }
+
+            return View(usuario);
+        
+        }
   
         [HttpGet]
         public IActionResult EditarPerfil(string id)
