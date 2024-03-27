@@ -1,9 +1,12 @@
 ﻿using Curso_Identity.Datos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Curso_Identity.Controllers
 {
+    [Authorize(Roles ="Administrador")] 
+    
     public class RolesController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
