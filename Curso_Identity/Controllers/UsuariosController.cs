@@ -29,6 +29,7 @@ namespace Curso_Identity.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles ="Administrador")]
         public  async Task<IActionResult> Index()
         {
 
@@ -61,6 +62,7 @@ namespace Curso_Identity.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Editar(string id)
         {
           var usuario = _context.AppUsuario.Find(id);
@@ -92,6 +94,7 @@ namespace Curso_Identity.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> Editar(AppUsuario usuario) {
 
             if (ModelState.IsValid) 
@@ -140,6 +143,7 @@ namespace Curso_Identity.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public IActionResult BloquearDesbloquear(string idUsuario ) 
         {
             var usuarioDB = _context.AppUsuario.Find(idUsuario);
@@ -285,6 +289,7 @@ namespace Curso_Identity.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrador")]
         public IActionResult Borrar(string idUsuario)
         {
 
