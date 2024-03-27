@@ -197,7 +197,7 @@ namespace Curso_Identity.Controllers
         }
 
         [HttpPost]
-
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditarPerfil(AppUsuario appusuario) {
 
 
@@ -282,6 +282,27 @@ namespace Curso_Identity.Controllers
 
             return View();
         
+        }
+
+        [HttpPost]
+        public IActionResult Borrar(string idUsuario)
+        {
+
+
+            var usuarioBd = _context.AppUsuario.Find(idUsuario);
+
+
+            if (usuarioBd is null)
+            {
+                return NotFound();
+
+            }
+
+            _context.AppUsuario.Remove(usuarioBd);
+
+            _context.SaveChanges();
+            TempData["Correcto"] = "El usuario ha sido eliminado exitosamente";
+            return RedirectToAction(nameof(Index));
         }
 
         }

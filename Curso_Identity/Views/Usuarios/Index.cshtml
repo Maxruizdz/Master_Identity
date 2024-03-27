@@ -94,7 +94,7 @@
 
 
 
-                                        <a class="btn btn-danger" asp-controller="Usuarios" asp-action="Borrar" asp-route-id="@item.Id">Borrar</a>
+                                        <button type ="submit" onclick="return confirm('Esta seguro de querer borrar este registro?')" class="btn btn-danger"> Borrar </button>
                                         </form>
                                     </td>
 
