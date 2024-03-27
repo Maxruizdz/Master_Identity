@@ -66,10 +66,36 @@
                                     <td>@Html.DisplayFor(m=>item.telefono)</td>
                                     <td>@Html.DisplayFor(m=>item.Rol)</td>
                                     <td>
+                                        <form asp-action="Borrar" asp-route-idUsuario="@item.Id">
                                         <a class="btn btn-primary" asp-controller="Usuarios" asp-action="Editar" asp-route-id="@item.Id">Editar</a>
-                                        <a class="btn btn-success" asp-controller="Usuarios" asp-action="Bloquear" asp-route-id="@item.Id">Bloquear</a>
-                                        <a class="btn btn-danger" asp-controller="Usuarios" asp-action="Borrar" asp-route-id="@item.Id">Borrar</a>
 
+
+
+                                            @if (item.LockoutEnd== null || item.LockoutEnd< DateTime.Now) {
+
+
+                                                <button asp-action="BloquearDesbloquear" asp-route-idUsuario="@item.Id" class="btn btn-secondary text-white" style="cursor:pointer">
+
+                                                    <strong>Bloquear</strong>
+
+                                                </button>
+                                            }
+
+                                            else
+                                            {
+                                                <button asp-action="BloquearDesbloquear" asp-route-idUsuario="@item.Id" class="btn btn-warning text-white" style="cursor:pointer">
+
+                                                    <strong>Desbloquear</strong>
+
+                                                </button>
+                                            
+                                            }
+
+
+
+
+                                        <a class="btn btn-danger" asp-controller="Usuarios" asp-action="Borrar" asp-route-id="@item.Id">Borrar</a>
+                                        </form>
                                     </td>
 
 

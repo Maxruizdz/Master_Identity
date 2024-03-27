@@ -92,7 +92,7 @@ namespace Curso_Identity.Controllers
             return View(usuario);
         }
         [HttpPost]
-
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Editar(AppUsuario usuario) {
 
             if (ModelState.IsValid) 
@@ -138,6 +138,39 @@ namespace Curso_Identity.Controllers
 
             return View(usuario);
         
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult BloquearDesbloquear(string idUsuario ) 
+        {
+            var usuarioDB = _context.AppUsuario.Find(idUsuario);
+            if (usuarioDB is null) {
+
+                return NotFound();
+            
+            }
+
+
+            if (usuarioDB.LockoutEnd is not null && usuarioDB.LockoutEnd > DateTime.Now)
+            {
+
+
+                usuarioDB.LockoutEnd = DateTime.Now;
+
+            }
+            else
+            {
+
+                usuarioDB.LockoutEnd = DateTime.Now.AddHours(10);
+            
+            }
+
+
+            _context.SaveChanges();
+
+
+
+            return RedirectToAction(nameof(Index));
         }
   
         [HttpGet]
