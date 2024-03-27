@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
 
 namespace Curso_Identity.Controllers
@@ -25,9 +26,36 @@ namespace Curso_Identity.Controllers
         
         
         }
-        public IActionResult Index()
+
+        [HttpGet]
+        public  async Task<IActionResult> Index()
         {
-            return View();
+
+            var usuarios= await _context.AppUsuario.ToListAsync();
+            var Roles_usuario = await _context.UserRoles.ToListAsync();
+            var roles = await _context.Roles.ToListAsync();
+
+
+            foreach (var usuario in usuarios) 
+            {
+
+                var rol = Roles_usuario.FirstOrDefault(p => p.UserId == usuario.Id);
+
+                if (rol is null)
+                {
+
+                    usuario.Rol = "Ninguno";
+
+                }
+                else {
+
+                    usuario.Rol = roles.FirstOrDefault(p => p.Id == rol.RoleId).Name;
+                
+                }
+
+            
+            }
+            return View(usuarios);
         }
 
   
