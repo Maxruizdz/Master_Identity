@@ -20,3 +20,4 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+Curso_Identity/appsettings.json

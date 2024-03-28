@@ -1,5 +1,4 @@
 C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\appsettings.Development.json
-C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\appsettings.json
 C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\Curso_Identity.staticwebassets.runtime.json
 C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\Curso_Identity.exe
 C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\Curso_Identity.deps.json
@@ -79,3 +78,5 @@ C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\Newto
 C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\MailKit.dll
 C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\MimeKit.dll
 C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\BouncyCastle.Crypto.dll
+C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\appsettings.json
+C:\Users\usuario\Desktop\Proyecto_Identity\Curso_Identity\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.Facebook.dll
