@@ -43,6 +43,36 @@
                         }
                         
 
+
+
+
+
+
+
+
+
+
+
+
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Acceso/Auth
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoPublico">Acceso público</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoAutenticado">Acceso autenciado</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoUsuario">Acceso usuario</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoRegistrado">Acceso registrado</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoAdministrador">Acceso administrador</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoUsuarioAdministrador">Acceso usuario O administrador</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoUsuarioYAdministrador">Acceso usuario Y administrador</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoAdministradorPermisoCrear">Acceso administrador / permiso crear</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoAdministradorPermisoEditarBorrar">Acceso administrador / permiso editar y borrar</a>
+                                <a class="dropdown-item" asp-controller="Autorizacion" asp-action="AccesoAdministradorPermisoCrearEditarBorrar">Acceso administrador / permiso crear, editar y borrar</a>
+
+                            </ul>
+                        </li>
                     </ul>
 
                     <partial name="_LoginRegistroVistaParcial"></partialn>
