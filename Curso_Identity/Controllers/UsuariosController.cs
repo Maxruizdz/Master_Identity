@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Claims;
 using static Curso_Identity.ViewModels.ClaimsUsuarioViewModel;
@@ -358,6 +359,43 @@ IdUsuario = idUsuario
                 return View(modelo);
         }
 
+
+        [HttpPost]
+
+        public async Task<IActionResult> AdministrarClaimsUsuario(ClaimsUsuarioViewModel claimsVm)
+        {
+            IdentityUser usuario = await _userManager.FindByIdAsync(claimsVm.IdUsuario);
+
+
+            if (usuario is null)
+            {
+                return NotFound();
+            }
+
+            var claims = await _userManager.GetClaimsAsync(usuario);
+            var resultado = await _userManager.RemoveClaimsAsync(usuario, claims);
+
+            if (!resultado.Succeeded) 
+            {
+
+                return View(claimsVm);
+            
+            
+            
+            }
+            resultado = await _userManager.AddClaimsAsync(usuario, claimsVm.Claims.Where(c => c.Seleccionado).Select(c => new Claim(c.TipoClaim, c.Seleccionado.ToString())));
+            if (!resultado.Succeeded)
+            {
+
+                return View(claimsVm);
+
+
+
+            }
+            return RedirectToAction(nameof(Index));
+
         }
+
+    }
     }
 
