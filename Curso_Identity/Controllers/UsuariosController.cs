@@ -1,4 +1,5 @@
-﻿using Curso_Identity.Datos;
+﻿using AppIdentityRazor.Claims;
+using Curso_Identity.Datos;
 using Curso_Identity.Models;
 using Curso_Identity.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -8,6 +9,8 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Metadata.Ecma335;
+using System.Security.Claims;
+using static Curso_Identity.ViewModels.ClaimsUsuarioViewModel;
 
 namespace Curso_Identity.Controllers
 {
@@ -308,6 +311,51 @@ namespace Curso_Identity.Controllers
             _context.SaveChanges();
             TempData["Correcto"] = "El usuario ha sido eliminado exitosamente";
             return RedirectToAction(nameof(Index));
+        }
+        //Manejo de CLaims
+        [HttpGet]
+        public async Task<IActionResult> AdministrarClaimsUsuario(string idUsuario)
+        {
+            IdentityUser usuario = await _userManager.FindByIdAsync(idUsuario);
+
+
+            if (usuario is null) 
+            {
+                return NotFound();
+            }
+
+            var claimUsuarioActual = await _userManager.GetClaimsAsync(usuario);
+
+
+          var modelo = new ClaimsUsuarioViewModel
+          {
+IdUsuario = idUsuario
+          };
+
+            foreach (Claim claim in ManejoClaims.listaClaims) 
+            {
+                ClaimUsuario claimUsuario = new ClaimUsuario()
+                {
+
+                    TipoClaim = claim.Type
+                
+                
+                };
+
+              if(  claimUsuarioActual.Any(c => c.Type == claim.Type))
+                    {
+                
+                
+                claimUsuario.Seleccionado = true;
+                
+               }
+                modelo.Claims.Add(claimUsuario);
+            
+            
+            }
+                
+                
+                return View(modelo);
         }
 
         }

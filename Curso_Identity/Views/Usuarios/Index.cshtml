@@ -69,7 +69,7 @@
                                         <form asp-action="Borrar" asp-route-idUsuario="@item.Id">
                                         <a class="btn btn-primary" asp-controller="Usuarios" asp-action="Editar" asp-route-id="@item.Id">Editar</a>
 
-
+                                            <a class="btn btn-success" asp-controller="Usuarios" asp-action="AdministrarClaimsUsuario" asp-route-id="@item.Id" style="cursor:pointer;"> Asignar Permisos/Claims</a>
 
                                             @if (item.LockoutEnd== null || item.LockoutEnd< DateTime.Now) {
 
